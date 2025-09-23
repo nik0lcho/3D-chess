@@ -1,0 +1,22 @@
+# Python / Django
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+*.sqlite3
+*.env
+*.venv/
+
+# macOS
+.DS_Store
+
+# PyCharm
+.idea/
+
+# Static / media (optional: ignore if generated or large)
+/static/models/*.glb
+/static/hdr/*.hdr
+/media/
+
+# Logs
+*.log
