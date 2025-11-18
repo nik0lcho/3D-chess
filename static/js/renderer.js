@@ -1,10 +1,1 @@
-// renderer.js
-export const renderer = new THREE.WebGLRenderer({ antialias: true });
-renderer.setSize(window.innerWidth, window.innerHeight);
-renderer.setPixelRatio(window.devicePixelRatio);
-document.body.appendChild(renderer.domElement);
-
-//background lighting settings
-renderer.toneMapping = THREE.ACESFilmicToneMapping;
-renderer.toneMappingExposure = 0.2;
-renderer.outputEncoding = THREE.sRGBEncoding;
+// renderer.jsexport const renderer = new THREE.WebGLRenderer({ antialias: true });renderer.setSize(window.innerWidth, window.innerHeight);renderer.setPixelRatio(window.devicePixelRatio);document.body.appendChild(renderer.domElement);//background lighting settingsrenderer.toneMapping = THREE.ACESFilmicToneMapping;renderer.toneMappingExposure = 0.2;renderer.outputEncoding = THREE.sRGBEncoding;

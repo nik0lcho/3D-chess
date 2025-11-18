@@ -4,6 +4,7 @@ import { addLights } from './lights.js';
 import { addEnvironment } from './environment.js';
 import { loadChessModel } from './modelLoader.js';
 import { startAnimation } from './animate.js';
+import { onPointerMove } from './hover.js'
 
 // Set initial camera position
 camera.position.z = 300;
@@ -13,7 +14,10 @@ setupResize(renderer);
 
 // Add lights and environment
 addLights();
-addEnvironment();
+addEnvironment()
+
+// Attach hover listener
+window.addEventListener('pointermove', onPointerMove);
 
 // Load chess model and start animation
 loadChessModel((model) => {
