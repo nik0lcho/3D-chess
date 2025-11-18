@@ -20,7 +20,7 @@ jobs:
         env:
           CF_ACCOUNT_ID: ${{ secrets.CF_ACCOUNT_ID }}
           CF_API_TOKEN: ${{ secrets.CF_API_TOKEN }}
-          R2_BUCKET: "your-r2-bucket-name" # <-- put your R2 bucket name here
+          R2_BUCKET: "autorag-data" # <-- put your R2 bucket name here
         run: |
           # Optional: only upload specific folder or file types
           for file in $(find . -type f); do
