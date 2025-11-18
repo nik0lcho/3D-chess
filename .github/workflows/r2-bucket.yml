@@ -3,7 +3,7 @@ name: Upload to Cloudflare R2
 on:
   push:
     branches:
-      - main  # change if needed
+      - main
 
 jobs:
   upload:
@@ -18,11 +18,12 @@ jobs:
 
       - name: Upload files to R2
         env:
-          CF_ACCOUNT_ID: ${{ secrets.CF_ACCOUNT_ID }}
-          CF_API_TOKEN: ${{ secrets.CF_API_TOKEN }}
-          R2_BUCKET: "autorag-data" # <-- put your R2 bucket name here
+          CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CF_ACCOUNT_ID }}
+          CLOUDFLARE_API_TOKEN: ${{ secrets.CF_API_TOKEN }}
+          R2_BUCKET: "autorag-data"
         run: |
-          # Optional: only upload specific folder or file types
-          for file in $(find . -type f); do
-            wrangler r2 put $R2_BUCKET "$file" "$file"
+          # Upload all files except .git
+          for file in $(find . -type f -not -path "./.git/*"); do
+            echo "Uploading $file..."
+            wrangler r2 object put $R2_BUCKET --key "$file" --file "$file"
           done
