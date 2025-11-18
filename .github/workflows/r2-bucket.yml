@@ -1,11 +1,28 @@
-- name: Configure AWS CLI for R2
-  run: |
-    aws configure set aws_access_key_id ${{ secrets.R2_ACCESS_KEY_ID }}
-    aws configure set aws_secret_access_key ${{ secrets.R2_SECRET_ACCESS_KEY }}
-    aws configure set default.region auto
-    aws configure set default.s3.signature_version s3v4
+name: Upload to Cloudflare R2
 
-- name: Upload files to R2
-  run: |
-    aws s3 cp ./build s3://${{ secrets.R2_BUCKET_NAME }}/ --recursive \
-    --endpoint-url https://${{ secrets.R2_ACCOUNT_ID }}.r2.cloudflarestorage.com
+on:
+  push:
+    branches:
+      - main  # or any branch you want
+
+jobs:
+  upload:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      - name: Install AWS CLI
+        run: sudo apt-get update && sudo apt-get install -y awscli
+
+      - name: Configure AWS CLI for R2
+        run: |
+          aws configure set aws_access_key_id ${{ secrets.R2_ACCESS_KEY_ID }}
+          aws configure set aws_secret_access_key ${{ secrets.R2_SECRET_ACCESS_KEY }}
+          aws configure set default.region auto
+          aws configure set default.s3.signature_version s3v4
+
+      - name: Upload files to R2
+        run: |
+          aws s3 cp ./build s3://${{ secrets.R2_BUCKET_NAME }}/ --recursive \
+          --endpoint-url https://${{ secrets.R2_ACCOUNT_ID }}.r2.cloudflarestorage.com
