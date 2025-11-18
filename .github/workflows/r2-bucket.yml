@@ -1,31 +1,11 @@
-name: Upload to Cloudflare R2
+- name: Configure AWS CLI for R2
+  run: |
+    aws configure set aws_access_key_id ${{ secrets.R2_ACCESS_KEY_ID }}
+    aws configure set aws_secret_access_key ${{ secrets.R2_SECRET_ACCESS_KEY }}
+    aws configure set default.region auto
+    aws configure set default.s3.signature_version s3v4
 
-on:
-  push:
-    branches:
-      - main
-
-jobs:
-  upload:
-    runs-on: ubuntu-latest
-
-    steps:
-      - name: Checkout repository
-        uses: actions/checkout@v3
-
-      - name: Install Wrangler CLI
-        run: npm install -g wrangler
-
-      - name: Upload files to R2
-        env:
-          CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CF_ACCOUNT_ID }}
-          CLOUDFLARE_API_TOKEN: ${{ secrets.CF_API_TOKEN }}
-          R2_BUCKET: "autorag-data"
-        run: |
-          # Upload all files except .git
-          for file in $(find . -type f -not -path "./.git/*"); do
-            # Remove leading ./ from file path
-            key=$(echo "$file" | sed 's|^\./||')
-            echo "Uploading $file as $key..."
-            wrangler r2 object put $R2_BUCKET/$key --file "$file"
-          done
+- name: Upload files to R2
+  run: |
+    aws s3 cp ./build s3://${{ secrets.R2_BUCKET_NAME }}/ --recursive \
+    --endpoint-url https://${{ secrets.R2_ACCOUNT_ID }}.r2.cloudflarestorage.com
