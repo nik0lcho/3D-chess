@@ -24,6 +24,8 @@ jobs:
         run: |
           # Upload all files except .git
           for file in $(find . -type f -not -path "./.git/*"); do
-            echo "Uploading $file..."
-            wrangler r2 object put $R2_BUCKET --key "$file" --file "$file"
+            # Remove leading ./ from file path
+            key=$(echo "$file" | sed 's|^\./||')
+            echo "Uploading $file as $key..."
+            wrangler r2 object put $R2_BUCKET/$key --file "$file"
           done
